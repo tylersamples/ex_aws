@@ -47,7 +47,15 @@ defmodule ExAws do
   """
   @impl ExAws.Behaviour
   def request(op, config_overrides \\ []) do
-    ExAws.Operation.perform(op, ExAws.Config.new(op.service, config_overrides))
+    {time, res} = :timer.tc(ExAws.Operation, :perform, [op, ExAws.Config.new(op.service, config_overrides)])
+
+    :telemetry.execute(
+      [:ex_aws, :request, :done],
+      %{latency: time},
+      %{service: op.service}
+    )
+
+    res
   end
 
   @doc """
