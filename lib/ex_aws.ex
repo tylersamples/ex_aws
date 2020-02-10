@@ -52,7 +52,7 @@ defmodule ExAws do
     :telemetry.execute(
       [:ex_aws, :request, op.service, :done],
       %{latency: time},
-      %{}
+      op.params
     )
 
     res
