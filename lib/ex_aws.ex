@@ -50,9 +50,9 @@ defmodule ExAws do
     {time, res} = :timer.tc(ExAws.Operation, :perform, [op, ExAws.Config.new(op.service, config_overrides)])
 
     :telemetry.execute(
-      [:ex_aws, :request, :done],
+      [:ex_aws, :request, op.service, :done],
       %{latency: time},
-      %{service: op.service}
+      %{}
     )
 
     res
